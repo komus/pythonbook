@@ -1,0 +1,899 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>Regular expression &#8212; Python Intermediate</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" href="../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'intermediate/regularexp';</script>
+    <link rel="canonical" href="https://smartsolutaris.com/intermediate/regularexp.html" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="&lt;no title&gt;" href="multithread.html" />
+    <link rel="prev" title="Generators" href="generators.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+  
+
+<a class="navbar-brand logo" href="../intro.html">
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Logo image"/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="Logo image"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Object Oriented Programming</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../oop/oop.html">OOP - object oriented programming</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Intermediate</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="intro.html">Introduction to Intermediate python</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="exceptions.html">Exceptions in Python</a></li>
+<li class="toctree-l2"><a class="reference internal" href="serialization.html">Serialization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="decorators.html">Decorators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="deepcopy.html">Deep vs shallow copy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lambdaexpressions.html">Lambda Expressions</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="iterators.html">Iterable</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generators.html">Generators</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Regular expression</a></li>
+
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../Exercises/exercise.html">Exercises</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../Exercises/Intermediate/lambda.html">Lambda Exercises</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/intermediate/regularexp.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script>
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Regular expression</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Regular expression</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">Introduction</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#regular-expression-patterns">Regular Expression Patterns</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#python-s-re-module">Python’s re Module</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#using-the-re-module">Using the re Module</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#re-match">re.match()</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#re-search">re.search()</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#re-findall">re.findall()</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#re-split">re.split()</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#re-sub">re.sub()</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#re-subn">re.subn()</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise">Exercise</a></li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="regular-expression">
+<h1>Regular expression<a class="headerlink" href="#regular-expression" title="Permalink to this heading">#</a></h1>
+<section id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this heading">#</a></h2>
+<p>Regular expressions (also known as “regex”) are powerful tools that provide a way to match patterns within strings of text. They offer an efficient way to search, replace, and parse text data based on patterns defined by a specific syntax.</p>
+<p>A regular expression is a sequence of characters that forms a search pattern. They can be used to perform ‘match’ operations to check if a string contains the specified search pattern.</p>
+</section>
+<section id="regular-expression-patterns">
+<h2>Regular Expression Patterns<a class="headerlink" href="#regular-expression-patterns" title="Permalink to this heading">#</a></h2>
+<p>Regular expressions use specific syntax to represent patterns:</p>
+<p><code class="docutils literal notranslate"><span class="pre">.</span></code>: Matches any character except newline.</p>
+<p><code class="docutils literal notranslate"><span class="pre">^</span></code>: Matches start of the string.</p>
+<p><code class="docutils literal notranslate"><span class="pre">$</span></code>: Matches end of the string.</p>
+<p><code class="docutils literal notranslate"><span class="pre">*</span></code>: Matches 0 or more repetitions.</p>
+<p><code class="docutils literal notranslate"><span class="pre">+</span></code>: Matches 1 or more repetitions.</p>
+<p><code class="docutils literal notranslate"><span class="pre">?</span></code>: Matches 0 or 1 repetitions.</p>
+<p><code class="docutils literal notranslate"><span class="pre">{n}</span></code>: Exactly n repetitions.</p>
+<p><code class="docutils literal notranslate"><span class="pre">{n,}</span></code>: n or more repetitions.</p>
+<p><code class="docutils literal notranslate"><span class="pre">{,n}</span></code>: Less than or equal to n repetitions.</p>
+<p><code class="docutils literal notranslate"><span class="pre">{m,n}</span></code>: Between m and n repetitions.</p>
+<p><code class="docutils literal notranslate"><span class="pre">\</span></code>: Escape special characters.</p>
+<p><code class="docutils literal notranslate"><span class="pre">[]</span></code>: Indicates a set of characters.</p>
+<p><code class="docutils literal notranslate"><span class="pre">|</span></code>: Means OR (Matches with any of the characters separated by it).</p>
+<p><code class="docutils literal notranslate"><span class="pre">()</span></code>: Group sub-patterns.</p>
+<p>Special Sequences</p>
+<p><code class="docutils literal notranslate"><span class="pre">\d</span></code>: Matches any decimal digit; this is equivalent to the class <code class="docutils literal notranslate"><span class="pre">[0-9]</span></code>.</p>
+<p><code class="docutils literal notranslate"><span class="pre">\D</span></code>: Matches any non-digit character.</p>
+<p><code class="docutils literal notranslate"><span class="pre">\s</span></code>: Matches any whitespace character.</p>
+<p><code class="docutils literal notranslate"><span class="pre">\S</span></code>: Matches any non-whitespace character.</p>
+<p><code class="docutils literal notranslate"><span class="pre">\w</span></code>: Matches any alphanumeric character; this is equivalent to the class <code class="docutils literal notranslate"><span class="pre">[a-zA-Z0-9_]</span></code>.</p>
+<p><code class="docutils literal notranslate"><span class="pre">\W</span></code>: Matches any non-alphanumeric character.</p>
+<p>Several on-line visual tools are available to validate the patterns we have written. One of them is <a class="reference external" href="https://regex101.com/">https://regex101.com/</a>. All we need to do is paste the text and provide a pattern, and the tool will visualize which parts of the text fit correctly.</p>
+</section>
+<section id="python-s-re-module">
+<h2>Python’s re Module<a class="headerlink" href="#python-s-re-module" title="Permalink to this heading">#</a></h2>
+<p>Python’s built-in re module allows us to work with regular expressions. To use it, you need to import the module using the import statement:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">re</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="using-the-re-module">
+<h2>Using the re Module<a class="headerlink" href="#using-the-re-module" title="Permalink to this heading">#</a></h2>
+<p>The re module offers functions like match(), search(), findall(), split(), sub(), which we’ll dive into during this lecture.</p>
+<section id="re-match">
+<h3>re.match()<a class="headerlink" href="#re-match" title="Permalink to this heading">#</a></h3>
+<p>The re.match() function will try to match the regular expression pattern to the string with optional flags.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">re</span>
+
+<span class="n">pattern</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;Python&quot;</span>
+<span class="n">string</span> <span class="o">=</span> <span class="s2">&quot;Python is amazing&quot;</span>
+
+<span class="n">match</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">pattern</span><span class="p">,</span> <span class="n">string</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="n">match</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Match found!&quot;</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;No match found.&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Match found!
+</pre></div>
+</div>
+</div>
+</div>
+<p>Here, r”Python” is a raw string which is used to write regular expressions in Python. The match() function only checks if the RE matches at the beginning of the string.</p>
+</section>
+<section id="re-search">
+<h3>re.search()<a class="headerlink" href="#re-search" title="Permalink to this heading">#</a></h3>
+<p>The re.search() function is similar to match(), but it doesn’t limit us to finding matches at the beginning of the string: i.e you want to locate a match anywhere in the string</p>
+<p>The method looks for the first location where the RegEx pattern produces a match with the string.</p>
+<p>If the search is successful, <code class="docutils literal notranslate"><span class="pre">re.search()</span></code> returns a match object; if not, it returns <code class="docutils literal notranslate"><span class="pre">None</span></code></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">re</span>
+
+<span class="n">pattern</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;amazing&quot;</span>
+<span class="n">string</span> <span class="o">=</span> <span class="s2">&quot;Python is amazing&quot;</span>
+
+<span class="n">match</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">pattern</span><span class="p">,</span> <span class="n">string</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="n">match</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Match found!&quot;</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;No match found.&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Match found!
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="re-findall">
+<h3>re.findall()<a class="headerlink" href="#re-findall" title="Permalink to this heading">#</a></h3>
+<p>The re.findall() function returns all non-overlapping matches of the RE pattern in string as a list of strings:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">re</span>
+
+<span class="n">pattern</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;\b\w</span><span class="si">{4}</span><span class="s2">\b&quot;</span>
+<span class="n">string</span> <span class="o">=</span> <span class="s2">&quot;This is a Python code&quot;</span>
+
+<span class="n">matches</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">pattern</span><span class="p">,</span> <span class="n">string</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">matches</span><span class="p">)</span>  <span class="c1"># [&#39;This&#39;, &#39;code&#39;]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;This&#39;, &#39;code&#39;]
+</pre></div>
+</div>
+</div>
+</div>
+<p>The pattern \b\w{4}\b matches any four-letter word.</p>
+</section>
+<section id="re-split">
+<h3>re.split()<a class="headerlink" href="#re-split" title="Permalink to this heading">#</a></h3>
+<p>The re.split() function splits the string by the occurrences of the pattern:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">re</span>
+
+<span class="n">pattern</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;\s&quot;</span>
+<span class="n">string</span> <span class="o">=</span> <span class="s2">&quot;This is a Python code&quot;</span>
+
+<span class="n">split</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">pattern</span><span class="p">,</span> <span class="n">string</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">split</span><span class="p">)</span>  <span class="c1"># [&#39;This&#39;, &#39;is&#39;, &#39;a&#39;, &#39;Python&#39;, &#39;code&#39;]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;This&#39;, &#39;is&#39;, &#39;a&#39;, &#39;Python&#39;, &#39;code&#39;]
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="re-sub">
+<h3>re.sub()<a class="headerlink" href="#re-sub" title="Permalink to this heading">#</a></h3>
+<p>The re.sub() function replaces the occurrences of the RE pattern in string with repl, substituting all occurrences unless max provided. This count is set to 1 by default:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">re</span>
+
+<span class="n">pattern</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;Python&quot;</span>
+<span class="n">repl</span> <span class="o">=</span> <span class="s2">&quot;JavaScript&quot;</span>
+<span class="n">string</span> <span class="o">=</span> <span class="s2">&quot;This is a Python code&quot;</span>
+
+<span class="n">new_string</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="n">pattern</span><span class="p">,</span> <span class="n">repl</span><span class="p">,</span> <span class="n">string</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">new_string</span><span class="p">)</span>  <span class="c1"># &#39;This is a JavaScript code&#39;</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>This is a JavaScript code
+</pre></div>
+</div>
+</div>
+</div>
+<p>Note: We will be using the re module in Python and findall() function for these examples which returns all non-overlapping matches of pattern in string, as a list of strings.</p>
+</section>
+<section id="re-subn">
+<h3>re.subn()<a class="headerlink" href="#re-subn" title="Permalink to this heading">#</a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">re.subn()</span></code> is similar to <code class="docutils literal notranslate"><span class="pre">re.sub()</span></code> except it returns a tuple of 2 items containing the new string and the number of substitutions made.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Program to remove all whitespaces</span>
+<span class="kn">import</span> <span class="nn">re</span>
+
+<span class="c1"># multiline string</span>
+<span class="n">string</span> <span class="o">=</span> <span class="s1">&#39;abc 12</span><span class="se">\</span>
+<span class="s1">de 23 </span><span class="se">\n</span><span class="s1"> f45 6&#39;</span>
+
+<span class="c1"># matches all whitespace characters</span>
+<span class="n">pattern</span> <span class="o">=</span> <span class="s1">&#39;\s+&#39;</span>
+
+<span class="c1"># empty string</span>
+<span class="n">replace</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+
+<span class="n">new_string</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">subn</span><span class="p">(</span><span class="n">pattern</span><span class="p">,</span> <span class="n">replace</span><span class="p">,</span> <span class="n">string</span><span class="p">)</span> 
+<span class="nb">print</span><span class="p">(</span><span class="n">new_string</span><span class="p">)</span>
+
+<span class="c1"># Output: (&#39;abc12de23f456&#39;, 4)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(&#39;abc12de23f456&#39;, 4)
+</pre></div>
+</div>
+</div>
+</div>
+<p>Matching Any Single Character (.):</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">re</span>
+
+<span class="n">pattern</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;a.b&quot;</span>  <span class="c1"># Matches any character between &#39;a&#39; and &#39;b&#39;</span>
+<span class="n">string</span> <span class="o">=</span> <span class="s2">&quot;acb axb a2b a_b aeb a-zb&quot;</span>
+
+<span class="n">matches</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">pattern</span><span class="p">,</span> <span class="n">string</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">matches</span><span class="p">)</span>  <span class="c1"># Output: [&#39;acb&#39;, &#39;axb&#39;, &#39;a2b&#39;, &#39;a_b&#39;, &#39;aeb&#39;, &#39;a-zb&#39;]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;acb&#39;, &#39;axb&#39;, &#39;a2b&#39;, &#39;a_b&#39;, &#39;aeb&#39;]
+</pre></div>
+</div>
+</div>
+</div>
+<p>In this case, the dot . matches any character except the newline character (\n).</p>
+<p>Matching Start and End of String (^ and $):</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">re</span>
+
+<span class="n">pattern</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;^Hello&quot;</span>  <span class="c1"># Matches strings that start with &#39;Hello&#39;</span>
+<span class="n">string1</span> <span class="o">=</span> <span class="s2">&quot;Hello world&quot;</span>
+<span class="n">string2</span> <span class="o">=</span> <span class="s2">&quot;world Hello&quot;</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="nb">bool</span><span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">pattern</span><span class="p">,</span> <span class="n">string1</span><span class="p">)))</span>  <span class="c1"># Output: True</span>
+<span class="nb">print</span><span class="p">(</span><span class="nb">bool</span><span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">pattern</span><span class="p">,</span> <span class="n">string2</span><span class="p">)))</span>  <span class="c1"># Output: False</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>True
+False
+</pre></div>
+</div>
+</div>
+</div>
+<p>The ^ character matches the start of the string. On the other hand, $ matches the end of the string.</p>
+<p>Character Sets ([]):</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">re</span>
+
+<span class="n">pattern</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;[A-Z]&quot;</span>  <span class="c1"># Matches any uppercase letter</span>
+<span class="n">string</span> <span class="o">=</span> <span class="s2">&quot;Hello World&quot;</span>
+
+<span class="n">matches</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">pattern</span><span class="p">,</span> <span class="n">string</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">matches</span><span class="p">)</span>  <span class="c1"># Output: [&#39;H&#39;, &#39;W&#39;]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;H&#39;, &#39;W&#39;]
+</pre></div>
+</div>
+</div>
+</div>
+<p>Here, [A-Z] matches any uppercase letter.</p>
+<p>Quantifiers (*, +, ?, {n}):</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">re</span>
+
+<span class="n">pattern</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;a</span><span class="si">{3}</span><span class="s2">&quot;</span>  <span class="c1"># Matches &#39;a&#39; repeated exactly 3 times</span>
+<span class="n">string</span> <span class="o">=</span> <span class="s2">&quot;aaaa baa aaa aa a aaa aaaa&quot;</span>
+
+<span class="n">matches</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">pattern</span><span class="p">,</span> <span class="n">string</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">matches</span><span class="p">)</span>  <span class="c1"># Output: [&#39;aaa&#39;, &#39;aaa&#39;, &#39;aaa&#39;, &#39;aaa&#39;]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;aaa&#39;, &#39;aaa&#39;, &#39;aaa&#39;, &#39;aaa&#39;]
+</pre></div>
+</div>
+</div>
+</div>
+<p>Quantifiers define how many times a character, group, or character set should be matched.</p>
+<p>Special Sequences (\d, \w, \s, etc.):</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">re</span>
+
+<span class="n">pattern</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;\d+&quot;</span>  <span class="c1"># Matches one or more digits</span>
+<span class="n">string</span> <span class="o">=</span> <span class="s2">&quot;123 abc 456 def 789&quot;</span>
+
+<span class="n">matches</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">pattern</span><span class="p">,</span> <span class="n">string</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">matches</span><span class="p">)</span>  <span class="c1"># Output: [&#39;123&#39;, &#39;456&#39;, &#39;789&#39;]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;123&#39;, &#39;456&#39;, &#39;789&#39;]
+</pre></div>
+</div>
+</div>
+</div>
+<p>n this example, \d matches any digit, and + specifies one or more occurrences.</p>
+<p>Remember, these are just a few examples of regex patterns. Regular expressions are extremely flexible and powerful, capable of matching and manipulating complex patterns of text data.</p>
+<p>Extracting email addresses:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">re</span>
+
+<span class="n">pattern</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b&quot;</span>
+<span class="n">string</span> <span class="o">=</span> <span class="s2">&quot;My emails are example@gmail.com and test123@domain.co.uk.&quot;</span>
+
+<span class="n">matches</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">pattern</span><span class="p">,</span> <span class="n">string</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">matches</span><span class="p">)</span>  
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;example@gmail.com&#39;, &#39;test123@domain.co.uk&#39;]
+</pre></div>
+</div>
+</div>
+</div>
+<p>This regular expression matches any valid email address. The character set [A-Za-z0-9._%+-]+ matches the local part of the email. &#64; matches the at sign, [A-Za-z0-9.-]+ matches the domain name, and finally .[A-Z|a-z]{2,} matches a period followed by the top-level domain (like .com, .co.uk).</p>
+<p>Extracting dates in the YYYY-MM-DD format:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">re</span>
+
+<span class="n">pattern</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;\b\d</span><span class="si">{4}</span><span class="s2">-\d</span><span class="si">{2}</span><span class="s2">-\d</span><span class="si">{2}</span><span class="s2">\b&quot;</span>
+<span class="n">string</span> <span class="o">=</span> <span class="s2">&quot;The dates are 2023-07-08, 2023.10.20,  and 2021-05-12.&quot;</span>
+
+<span class="n">matches</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">pattern</span><span class="p">,</span> <span class="n">string</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">matches</span><span class="p">)</span>  <span class="c1"># Output: [&#39;2023-07-08&#39;, &#39;2021-05-12&#39;]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;2023-07-08&#39;, &#39;2021-05-12&#39;]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>This regex pattern matches any date in the YYYY-MM-DD format. \d{4} matches a four-digit year, followed by a dash. \d{2} matches a two-digit month and day, separated by a dash.</p>
+<p>Validating a Password:</p>
+<p>Let’s say you want to check if a password string is strong. For this example, a strong password is one that contains at least 8 characters, has both uppercase and lowercase characters, has at least one digit, and at least one special character.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">re</span>
+
+<span class="n">pattern</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*#?&amp;])[A-Za-z\d@$!#%*?&amp;]{8,}$&quot;</span>
+<span class="n">password</span> <span class="o">=</span> <span class="s2">&quot;Password123!&quot;</span>
+
+<span class="n">match</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">pattern</span><span class="p">,</span> <span class="n">password</span><span class="p">)</span>
+<span class="k">if</span> <span class="n">match</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Strong password.&quot;</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Weak password.&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Strong password.
+</pre></div>
+</div>
+</div>
+</div>
+<p>Matching a Hexadecimal Color Code:</p>
+<p>Hexadecimal color codes are used in web development and design to specify colors. They consist of a hash sign # followed by 6 hexadecimal digits.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">re</span>
+
+<span class="n">pattern</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;^#(?:[0-9a-fA-F]</span><span class="si">{3}</span><span class="s2">){1,2}$&quot;</span>
+<span class="n">color_code</span> <span class="o">=</span> <span class="s2">&quot;#1F1F1F&quot;</span>
+
+<span class="n">match</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">pattern</span><span class="p">,</span> <span class="n">color_code</span><span class="p">)</span>
+<span class="k">if</span> <span class="n">match</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Valid color code.&quot;</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Invalid color code.&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Valid color code.
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="exercise">
+<h1>Exercise<a class="headerlink" href="#exercise" title="Permalink to this heading">#</a></h1>
+<p><a class="reference external" href="https://web.stanford.edu/~jurafsky/slp3/2.pdf">https://web.stanford.edu/~jurafsky/slp3/2.pdf</a></p>
+<ol class="arabic simple">
+<li><p>All three letter words</p></li>
+<li><p>Dollar amounts like <span class="math notranslate nohighlight">\(8 and \)</span>3.99</p></li>
+<li><p>Two consecutive repeated words</p></li>
+<li><p>All single syllable words</p></li>
+</ol>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./intermediate"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+                <footer class="bd-footer-article">
+                  
+<div class="footer-article-items footer-article__inner">
+  
+    <div class="footer-article-item"><!-- Previous / next buttons -->
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="generators.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Generators</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="multithread.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">&lt;no title&gt;</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div></div>
+  
+</div>
+
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Regular expression</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">Introduction</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#regular-expression-patterns">Regular Expression Patterns</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#python-s-re-module">Python’s re Module</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#using-the-re-module">Using the re Module</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#re-match">re.match()</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#re-search">re.search()</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#re-findall">re.findall()</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#re-split">re.split()</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#re-sub">re.sub()</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#re-subn">re.subn()</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise">Exercise</a></li>
+</ul>
+
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Oyindolapo Komolafe
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  <p class="copyright">
+    
+      © Copyright 2022.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
