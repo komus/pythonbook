@@ -1,0 +1,32 @@
+format: jb-book
+root: intro
+parts:
+- caption: Object Oriented Programming
+  chapters:
+  - file: oop/oop
+  sections:
+    - file: oop/classes
+    - file: oop/inheritance
+    - file: oop/encapsulation
+    - file: oop/abstractclass
+    - file: oop/classmethods
+    - file: oop/dataclass
+
+- caption: Intermediate
+  chapters:
+  - file: intermediate/intro
+    sections:
+    - file: intermediate/exceptions
+    - file: intermediate/serialization
+    - file: intermediate/decorators
+    - file: intermediate/deepcopy
+    - file: intermediate/lambdaexpressions
+    - file: intermediate/iterators
+    - file: intermediate/generators
+    - file: intermediate/regularexp.ipynb
+    - file: intermediate/multithread.ipynb
+  - file: Exercises/exercise.md
+    sections:
+    - file: Exercises/Intermediate/lambda
+
+
